@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ServerThread thread = new ServerThread(txtLog);
                 thread.start();
+                //Log.d("MyServer", getIPAddress(true));
             }
             });
         }
@@ -44,30 +45,32 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void run(){
-                int port = 5555;
+                int port = 8769;
                 try{
+
                     ServerSocket server = new ServerSocket(port);
-                    Log.d("ServerThread", "Server Started.");
+                    Log.d("MyServer", "Server Started.");
                     InetAddress iAddress = InetAddress.getLocalHost();
                     String server_IP = getIPAddress(true);//iAddress.getHostAddress();
                     //tv.setText("Server Started.\nIP: " + server_IP + "\nPort: " + String.valueOf(port));
                     int i=0;
-                    //tv.setText("123123");
+                    Log.d("MyServer", "Server ready.");
                     while(i<1){
-                        tv.setText("listenign");
+                        //tv.setText("listening");
+                        Log.d("MyServer", "Server listening.");
                         Socket socket = server.accept();
-                        tv.setText("connected");
+                        //tv.setText("connected");
                         ObjectInputStream instream = new ObjectInputStream(socket.getInputStream());
                         Object input = instream.readObject();
-                        Log.d("ServerThread", "input: " + input);
-                        tv.setText((String) input);
+                        Log.d("MyServer", "input: " + input);
+                        //tv.setText((String) input);
 
 
                         ObjectOutputStream outstream = new ObjectOutputStream(socket.getOutputStream());
                         outstream.writeObject(input + " from server.");
                         outstream.flush();
                         Log.d("ServerThread", "output sent");
-                        tv.setText("output sent");
+                        //tv.setText("output sent");
                         socket.close();
                         i++;
                     }
